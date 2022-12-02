@@ -13,18 +13,23 @@ public class Product {
 		productName=prodName;
 		productPrice=prodPrice;
 	}
+	
 	public Product(int prodId){
 		productId=prodId;
 	}
+	
 	public Product(String prodName){
 	productName=prodName;
 	}
+	
 	public Product(double prodPrice){
 	productPrice=prodPrice;
 	}
+	
 	public void setProductId(int prodId) {
 		productId=prodId;
 	}
+	
 	public void setProductName(String prodName) {
 		productName=prodName;
 	}

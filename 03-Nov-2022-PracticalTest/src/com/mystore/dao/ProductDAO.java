@@ -25,6 +25,7 @@ public class ProductDAO {
 						prodArr2[j]=prodArr[i];
 						j++;
 					}
+
 				}
 			
 		return prodArr2;
