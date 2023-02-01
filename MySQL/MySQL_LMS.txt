@@ -1,0 +1,322 @@
+Enter password: *******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 16
+Server version: 8.0.32 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| db                 |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> use db;
+Database changed
+mysql> select * from Persons;
++----------+----------+-----------+------+
+| PersonID | LastName | FirstName | City |
++----------+----------+-----------+------+
+|        1 | Awate    | Samruddhi | pune |
+|        2 | abc      | A         | pune |
++----------+----------+-----------+------+
+2 rows in set (0.00 sec)
+
+mysql> create database;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> create database testDB;
+Query OK, 1 row affected (0.06 sec)
+
+mysql> show create database testDB;
++----------+----------------------------------------------------------------------------------------------------------------------------------+
+| Database | Create Database                                                                                                                  |
++----------+----------------------------------------------------------------------------------------------------------------------------------+
+| testDB   | CREATE DATABASE `testDB` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */ |
++----------+----------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.04 sec)
+
+
+mysql> create table countries(
+    -> country_id int,
+    -> country_Name varchar(100),
+    -> Region_id int);
+Query OK, 0 rows affected (0.18 sec)
+
+mysql> insert into countries values(1,'India',1001);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> select * from countries;
++------------+--------------+-----------+
+| country_id | country_Name | Region_id |
++------------+--------------+-----------+
+|          1 | India        |      1001 |
++------------+--------------+-----------+
+1 row in set (0.00 sec)
+
+mysql> insert into countries(country_id,country_Name) values(2,'Shrilanka');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> dsec countries;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'dsec countries' at line 1
+mysql> select *from countries;
++------------+--------------+-----------+
+| country_id | country_Name | Region_id |
++------------+--------------+-----------+
+|          1 | India        |      1001 |
+|          2 | Shrilanka    |      NULL |
++------------+--------------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> create table if not exists country_new
+    -> as select *from countries;
+Query OK, 2 rows affected (0.17 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from country_new;
++------------+--------------+-----------+
+| country_id | country_Name | Region_id |
++------------+--------------+-----------+
+|          1 | India        |      1001 |
+|          2 | Shrilanka    |      NULL |
++------------+--------------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> insert into countries (country_id,country_Name,region_id)values(3,'Koria',Null);
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select *from countries;
++------------+--------------+-----------+
+| country_id | country_Name | Region_id |
++------------+--------------+-----------+
+|          1 | India        |      1001 |
+|          2 | Shrilanka    |      NULL |
+|          3 | Koria        |      NULL |
++------------+--------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> insert into countries values(4,'UK',1050);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into countries values(5,'Pak',1090),(6,'China',200);
+Query OK, 2 rows affected (0.07 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select *from countries;
++------------+--------------+-----------+
+| country_id | country_Name | Region_id |
++------------+--------------+-----------+
+|          1 | India        |      1001 |
+|          2 | Shrilanka    |      NULL |
+|          3 | Koria        |      NULL |
+|          4 | UK           |      1050 |
+|          5 | Pak          |      1090 |
+|          6 | China        |       200 |
++------------+--------------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> insert into country_new
+    -> select *from countries;
+Query OK, 6 rows affected (0.09 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> select *from country_new;
++------------+--------------+-----------+
+| country_id | country_Name | Region_id |
++------------+--------------+-----------+
+|          1 | India        |      1001 |
+|          2 | Shrilanka    |      NULL |
+|          1 | India        |      1001 |
+|          2 | Shrilanka    |      NULL |
+|          3 | Koria        |      NULL |
+|          4 | UK           |      1050 |
+|          5 | Pak          |      1090 |
+|          6 | China        |       200 |
++------------+--------------+-----------+
+8 rows in set (0.00 sec)
+
+mysql> alter table countries add primary key(country_id);
+Query OK, 0 rows affected (0.34 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select *from countries;
++------------+--------------+-----------+
+| country_id | country_Name | Region_id |
++------------+--------------+-----------+
+|          1 | India        |      1001 |
+|          2 | Shrilanka    |      NULL |
+|          3 | Koria        |      NULL |
+|          4 | UK           |      1050 |
+|          5 | Pak          |      1090 |
+|          6 | China        |       200 |
++------------+--------------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> select *from country_new;
++------------+--------------+-----------+
+| country_id | country_Name | Region_id |
++------------+--------------+-----------+
+|          1 | India        |      1001 |
+|          2 | Shrilanka    |      NULL |
+|          1 | India        |      1001 |
+|          2 | Shrilanka    |      NULL |
+|          3 | Koria        |      NULL |
+|          4 | UK           |      1050 |
+|          5 | Pak          |      1090 |
+|          6 | China        |       200 |
++------------+--------------+-----------+
+8 rows in set (0.00 sec)
+
+mysql> select distinct country_id from country_new;
++------------+
+| country_id |
++------------+
+|          1 |
+|          2 |
+|          3 |
+|          4 |
+|          5 |
+|          6 |
++------------+
+6 rows in set (0.08 sec)
+
+mysql> select *from country_new;
++------------+--------------+-----------+
+| country_id | country_Name | Region_id |
++------------+--------------+-----------+
+|          1 | India        |      1001 |
+|          2 | Shrilanka    |      NULL |
+|          1 | India        |      1001 |
+|          2 | Shrilanka    |      NULL |
+|          3 | Koria        |      NULL |
+|          4 | UK           |      1050 |
+|          5 | Pak          |      1090 |
+|          6 | China        |       200 |
++------------+--------------+-----------+
+8 rows in set (0.00 sec)
+
+mysql>update country_new set country_Name='Thailand' where country_id=1;
+Query OK, 2 rows affected (0.11 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select *from country_new;
++------------+--------------+-----------+
+| country_id | country_Name | Region_id |
++------------+--------------+-----------+
+|          1 | Thailand     |      1001 |
+|          2 | Shrilanka    |      NULL |
+|          1 | Thailand     |      1001 |
+|          2 | Shrilanka    |      NULL |
+|          3 | Koria        |      NULL |
+|          4 | UK           |      1050 |
+|          5 | Pak          |      1090 |
+|          6 | China        |       200 |
++------------+--------------+-----------+
+8 rows in set (0.00 sec)
+
+mysql> select count(Country_Name) from country_new;
++---------------------+
+| count(Country_Name) |
++---------------------+
+|                   8 |
++---------------------+
+1 row in set (0.07 sec)
+
+mysql> select max(Region_id) from Country_new;
++----------------+
+| max(Region_id) |
++----------------+
+|           1090 |
++----------------+
+1 row in set (0.05 sec)
+
+mysql> select min(Region_id) from country_new;
++----------------+
+| min(Region_id) |
++----------------+
+|            200 |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(Region_id) from country_new;
++----------------+
+| sum(Region_id) |
++----------------+
+|           4342 |
++----------------+
+1 row in set (0.01 sec)
+
+mysql> select avg(Region_id) from country_new;
++----------------+
+| avg(Region_id) |
++----------------+
+|       868.4000 |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> select country_name from country_new;
++--------------+
+| country_name |
++--------------+
+| Thailand     |
+| Shrilanka    |
+| Thailand     |
+| Shrilanka    |
+| Koria        |
+| UK           |
+| Pak          |
+| China        |
++--------------+
+8 rows in set (0.00 sec)
+
+mysql> select country_name samruddhi from country_new;
++-----------+
+| samruddhi |
++-----------+
+| Thailand  |
+| Shrilanka |
+| Thailand  |
+| Shrilanka |
+| Koria     |
+| UK        |
+| Pak       |
+| China     |
++-----------+
+8 rows in set (0.00 sec)
+
+mysql> update country_new set country_Name='Thailand' where country_id=1;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 2  Changed: 0  Warnings: 0
+
+mysql> Query OK, 2 rows affected (0.11 sec)
+    -> Rows matched: 2  Changed: 2  Warnings: 0
+    ->
+    -> mysql> select *from country_new;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Query OK, 2 rows affected (0.11 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+m' at line 1
+mysql> +------------+--------------+-----------+
+    -> | country_id | country_Name | Region_id |
+    -> +------------+--------------+-----------+
+    -> |          1 | Thailand     |      1001 |
+    -> |          2 | Shrilanka    |      NULL |
+    -> |          1 | Thailand     |      1001 |
+    -> |          2 | Shrilanka    |      NULL |
+    -> |          3 | Koria        |      NULL |
+    -> |          4 | UK           |      1050 |
+    -> |          5 | Pak          |      1090 |
+    -> |          6 | China        |       200 |
+    -> +------------+--------------+-----------+
+    -> 8 rows in set (0.00 sec)
